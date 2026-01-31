@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './utilities.css';
+
+/* Apply Open Sans font globally */
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Print-specific styles */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-full-page {
+    width: 100%;
+    height: 100vh;
+    page-break-after: avoid;
+  }
+}
+
+/* Invoice specific styles */
+.invoice-container {
+  background: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.invoice-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.invoice-table th,
+.invoice-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+
+.invoice-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  text-align: center;
+}
+
+.invoice-header-title {
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #1e5a9e;
+}
+
+.invoice-header-green {
+  color: #2d8659;
+}
+
+/* QR Code positioning */
+.qr-code-container {
+  position: absolute;
+  right: 20px;
+  bottom: 100px;
+}
