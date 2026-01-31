@@ -76,11 +76,11 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
 
     const element = invoiceRef.current;
     const canvas = await html2canvas(element, {
-      scale: 3 as any, // Type assertion needed for html2canvas version compatibility
+      scale: 3,
       useCORS: true,
       logging: false,
       backgroundColor: '#ffffff',
-    });
+    } as any);
 
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');

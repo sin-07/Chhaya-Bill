@@ -36,12 +36,24 @@ const invoiceSchema = new mongoose.Schema({
   dateOfIssue: { type: Date, default: Date.now }
 }, { timestamps: true });
 
-const Invoice = mongoose.models.Invoice || mongoose.model('Invoice', invoiceSchema);
+type InvoiceDocument = mongoose.Document & {
+  invoiceNumber: string;
+  clientName: string;
+  clientAddress: string;
+  products: any[];
+  totalAmount: number;
+  previousDues: number;
+  grandTotal: number;
+  dateOfIssue: Date;
+};
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+const InvoiceModel: mongoose.Model<InvoiceDocument> = mongoose.models.Invoice || mongoose.model<InvoiceDocument>('Invoice', invoiceSchema);
+
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
-    const invoice = await Invoice.findById(params.id);
+    const { id } = await params;
+    const invoice = await InvoiceModel.findById(id).exec();
     if (!invoice) return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
     return NextResponse.json(invoice);
   } catch (error) {
@@ -50,11 +62,12 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
+    const { id } = await params;
     const body = await request.json();
-    const invoice = await Invoice.findByIdAndUpdate(params.id, body, { new: true, runValidators: true });
+    const invoice = await InvoiceModel.findByIdAndUpdate(id, body, { new: true, runValidators: true }).exec();
     if (!invoice) return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
     return NextResponse.json(invoice);
   } catch (error) {
@@ -63,10 +76,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
-    const invoice = await Invoice.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const invoice = await InvoiceModel.findByIdAndDelete(id).exec();
     if (!invoice) return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
     return NextResponse.json({ message: 'Invoice deleted successfully' });
   } catch (error) {

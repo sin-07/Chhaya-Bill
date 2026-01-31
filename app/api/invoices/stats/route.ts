@@ -26,19 +26,30 @@ const invoiceSchema = new mongoose.Schema({
   dateOfIssue: { type: Date, default: Date.now }
 }, { timestamps: true });
 
-const Invoice = mongoose.models.Invoice || mongoose.model('Invoice', invoiceSchema);
+type InvoiceDocument = mongoose.Document & {
+  invoiceNumber: string;
+  clientName: string;
+  clientAddress: string;
+  products: any[];
+  totalAmount: number;
+  previousDues: number;
+  grandTotal: number;
+  dateOfIssue: Date;
+};
+
+const Invoice: mongoose.Model<InvoiceDocument> = mongoose.models.Invoice || mongoose.model<InvoiceDocument>('Invoice', invoiceSchema);
 
 export async function GET() {
   try {
     await connectDB();
-    const totalInvoices = await Invoice.countDocuments();
-    const invoices = await Invoice.find();
+    const totalInvoices = await Invoice.countDocuments().exec();
+    const invoices = await Invoice.find().exec();
     const totalRevenue = invoices.reduce((sum, inv) => sum + inv.grandTotal, 0);
     const totalDues = invoices.reduce((sum, inv) => sum + inv.previousDues, 0);
     const startOfMonth = new Date();
     startOfMonth.setDate(1);
     startOfMonth.setHours(0, 0, 0, 0);
-    const monthlyInvoices = await Invoice.countDocuments({ createdAt: { $gte: startOfMonth } });
+    const monthlyInvoices = await Invoice.countDocuments({ createdAt: { $gte: startOfMonth } }).exec();
     return NextResponse.json({ totalInvoices, totalRevenue, pendingDues: totalDues, monthlyInvoices });
   } catch (error) {
     console.error('Error fetching stats:', error);

@@ -42,12 +42,23 @@ const invoiceSchema = new mongoose.Schema({
   dateOfIssue: { type: Date, default: Date.now }
 }, { timestamps: true });
 
-const Invoice = mongoose.models.Invoice || mongoose.model('Invoice', invoiceSchema);
+type InvoiceDocument = mongoose.Document & {
+  invoiceNumber: string;
+  clientName: string;
+  clientAddress: string;
+  products: any[];
+  totalAmount: number;
+  previousDues: number;
+  grandTotal: number;
+  dateOfIssue: Date;
+};
+
+const Invoice: mongoose.Model<InvoiceDocument> = mongoose.models.Invoice || mongoose.model<InvoiceDocument>('Invoice', invoiceSchema);
 
 export async function GET() {
   try {
     await connectDB();
-    const invoices = await Invoice.find().sort({ createdAt: -1 });
+    const invoices = await Invoice.find().sort({ createdAt: -1 }).exec();
     return NextResponse.json({ invoices, totalPages: 1, currentPage: 1, total: invoices.length });
   } catch (error) {
     console.error('Error fetching invoices:', error);
@@ -62,7 +73,7 @@ export async function POST(request: NextRequest) {
     console.log('Received invoice data:', JSON.stringify(body, null, 2));
     
     if (!body.invoiceNumber) {
-      const count = await Invoice.countDocuments();
+      const count = await Invoice.countDocuments().exec();
       body.invoiceNumber = `INV-${String(count + 1).padStart(4, '0')}`;
     }
     
