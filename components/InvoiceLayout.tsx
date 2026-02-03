@@ -26,6 +26,10 @@ interface Invoice {
   totalAmount: number;
   previousDues: number;
   grandTotal: number;
+  // New payment tracking fields
+  billTotal?: number;      // Total bill amount (products total + previous dues)
+  advancePaid?: number;    // Amount paid in advance by client
+  dues?: number;           // Remaining amount = billTotal - advancePaid
   dateOfIssue: string;
   createdAt?: string;
   updatedAt?: string;
@@ -220,68 +224,79 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
                 </tr>
               </thead>
               <tbody>
-                {invoice.products.map((product, index) => (
+                {invoice.products.map((product, index) => {
+                  const width = Number(product.width) || 0;
+                  const height = Number(product.height) || 0;
+                  const sqft = Number(product.sqft) || (width * height);
+                  const hasDimensions = width > 0 && height > 0;
+                  
+                  return (
                   <tr key={index}>
                     <td style={{ ...tableCellStyle, textAlign: 'center' }}>
                       {index + 1}
                     </td>
                     <td style={{ ...tableCellStyle, fontWeight: '500' }}>
                       {product.name}
-                      {product.sqft && (
+                      {hasDimensions && (
                         <span style={{ fontSize: '9px', color: '#555', display: 'block', marginTop: '2px', fontWeight: 'normal' }}>
-                          [{product.width}ft × {product.height}ft = {product.sqft.toFixed(2)} sq.ft]
+                          {width} × {height} = {sqft.toFixed(2)} sq.ft
                         </span>
                       )}
                     </td>
                     <td style={{ ...tableCellStyle, textAlign: 'center' }}>
                       {product.quantity}
-                      {product.sqft && (
-                        <span style={{ fontSize: '8px', color: '#555', display: 'block', marginTop: '1px' }}>
-                          pcs
-                        </span>
-                      )}
                     </td>
                     <td style={{ ...tableCellStyle, textAlign: 'center' }}>
                       {product.unitCost}
-                      {product.sqft && (
-                        <span style={{ fontSize: '8px', color: '#555', display: 'block', marginTop: '1px' }}>
-                          /sq.ft
-                        </span>
-                      )}
                     </td>
                     <td style={{ ...tableCellStyle, textAlign: 'center' }}>
                       {product.total}
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
                 {/* Total Row */}
                 <tr>
                   <td style={{ border: 'none' }} colSpan={3}></td>
                   <td style={{ ...tableCellStyle, fontWeight: 'bold', backgroundColor: '#FFFF00', textAlign: 'center' }}>
                     Total
                   </td>
-                  <td style={{ ...tableCellStyle, textAlign: 'center', fontWeight: 'bold' }}>
+                  <td style={{ ...tableCellStyle, textAlign: 'center', fontWeight: 'bold', backgroundColor: '#FFFF00' }}>
                     {invoice.totalAmount}
                   </td>
                 </tr>
-                {/* ADV PAID Row */}
+                {/* Previous Dues Row (if any) */}
+                {invoice.previousDues > 0 && (
+                  <tr>
+                    <td style={{ border: 'none' }} colSpan={3}></td>
+                    <td style={{ ...tableCellStyle, fontWeight: 'bold', backgroundColor: '#FFB6C1', textAlign: 'center' }}>
+                      Previous Dues
+                    </td>
+                    <td style={{ ...tableCellStyle, textAlign: 'center', fontWeight: 'bold', backgroundColor: '#FFB6C1' }}>
+                      {invoice.previousDues}
+                    </td>
+                  </tr>
+                )}
+                {/* ADVANCE PAID Row */}
+                {(invoice.advancePaid ?? 0) > 0 && (
+                  <tr>
+                    <td style={{ border: 'none' }} colSpan={3}></td>
+                    <td style={{ ...tableCellStyle, fontWeight: 'bold', backgroundColor: '#90EE90', textAlign: 'center' }}>
+                      ADV PAID
+                    </td>
+                    <td style={{ ...tableCellStyle, textAlign: 'center', fontWeight: 'bold', backgroundColor: '#90EE90' }}>
+                      {invoice.advancePaid ?? 0}
+                    </td>
+                  </tr>
+                )}
+                {/* Bill Total Row */}
                 <tr>
                   <td style={{ border: 'none' }} colSpan={3}></td>
-                  <td style={{ ...tableCellStyle, fontWeight: 'bold',  textAlign: 'center' }}>
-                    ADV PAID
+                  <td style={{ ...tableCellStyle, fontWeight: 'bold', backgroundColor: '#E0E0E0', textAlign: 'center' }}>
+                    Grand Total
                   </td>
-                  <td style={{ ...tableCellStyle, textAlign: 'center', fontWeight: 'bold' }}>
-                    {invoice.previousDues}
-                  </td>
-                </tr>
-                {/* GRAND TOTAL Row */}
-                <tr>
-                  <td style={{ border: 'none' }} colSpan={3}></td>
-                  <td style={{ ...tableCellStyle, fontWeight: 'bold', backgroundColor: '#D3D3D3', textAlign: 'center' }}>
-                    GRAND TOTAL
-                  </td>
-                  <td style={{ ...tableCellStyle, textAlign: 'center',backgroundColor: '#D3D3D3', fontWeight: 'bold' }}>
-                    {invoice.grandTotal}
+                  <td style={{ ...tableCellStyle, textAlign: 'center', fontWeight: 'bold', backgroundColor: '#E0E0E0' }}>
+                    {(invoice.billTotal ?? invoice.grandTotal) - (invoice.advancePaid ?? 0)}
                   </td>
                 </tr>
               </tbody>

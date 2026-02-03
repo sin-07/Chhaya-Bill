@@ -18,6 +18,10 @@ export interface IInvoice extends Document {
   totalAmount: number;
   previousDues: number;
   grandTotal: number;
+  // New payment tracking fields
+  billTotal: number;      // Total bill amount (products total + previous dues)
+  advancePaid: number;    // Amount paid in advance by client
+  dues: number;           // Remaining amount = billTotal - advancePaid
   dateOfIssue: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -81,6 +85,27 @@ const invoiceSchema = new Schema<IInvoice>({
   grandTotal: {
     type: Number,
     required: true,
+  },
+  // Bill Total: The total amount to be paid (products total + previous dues)
+  billTotal: {
+    type: Number,
+    required: true,
+    default: 0,
+    min: [0, 'Bill total cannot be negative'],
+  },
+  // Advance Paid: The amount paid in advance by the client
+  advancePaid: {
+    type: Number,
+    required: true,
+    default: 0,
+    min: [0, 'Advance payment cannot be negative'],
+  },
+  // Dues: Remaining amount to be paid (billTotal - advancePaid)
+  dues: {
+    type: Number,
+    required: true,
+    default: 0,
+    min: [0, 'Dues cannot be negative'],
   },
   dateOfIssue: {
     type: Date,

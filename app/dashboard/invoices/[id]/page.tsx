@@ -27,6 +27,10 @@ interface Invoice {
   totalAmount: number;
   previousDues: number;
   grandTotal: number;
+  // New payment tracking fields
+  billTotal?: number;      // Total bill amount (products total + previous dues)
+  advancePaid?: number;    // Amount paid in advance by client
+  dues?: number;           // Remaining amount = billTotal - advancePaid
   dateOfIssue: string;
   createdAt: string;
   updatedAt: string;

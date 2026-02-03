@@ -4,8 +4,15 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
+import { 
+  calculatePayment, 
+  calculateProductsTotal, 
+  formatCurrency,
+  getPaymentStatus,
+  getPaymentStatusBadge
+} from '@/lib/paymentCalculations';
 
 const API_URL = '';
 
@@ -25,6 +32,7 @@ interface FormData {
   clientAddress: string;
   dateOfIssue: string;
   previousDues: number;
+  advancePaid: number;  // New field for advance payment
   products: Product[];
 }
 
@@ -32,6 +40,8 @@ interface Invoice extends FormData {
   _id: string;
   totalAmount: number;
   grandTotal: number;
+  billTotal: number;
+  dues: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -41,6 +51,7 @@ export default function EditInvoicePage() {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [fetchingInvoice, setFetchingInvoice] = useState(true);
+  const [paymentError, setPaymentError] = useState<string | null>(null);  // Payment validation error
   
   const [formData, setFormData] = useState<FormData>({
     invoiceNumber: '',
@@ -48,6 +59,7 @@ export default function EditInvoicePage() {
     clientAddress: '',
     dateOfIssue: '',
     previousDues: 0,
+    advancePaid: 0,  // Initialize advance payment to 0
     products: [
       { name: '', quantity: 1, unitCost: 0, total: 0, width: undefined, height: undefined, sqft: undefined }
     ]
@@ -64,15 +76,36 @@ export default function EditInvoicePage() {
       const response = await axios.get<Invoice>(`${API_URL}/api/invoices/${params.id}`);
       
       const invoice = response.data;
+      console.log('RAW API Response:', response.data);
+      console.log('RAW Products from API:', invoice.products);
+      
+      // Map products with width, height, sqft values
+      const productsWithDimensions = invoice.products.map(p => {
+        console.log('Each product from API:', p, 'width:', p.width, 'height:', p.height);
+        return {
+          name: p.name,
+          quantity: p.quantity,
+          unitCost: p.unitCost,
+          total: p.total,
+          width: p.width,
+          height: p.height,
+          sqft: p.sqft
+        };
+      });
+      
+      console.log('Products with dimensions after mapping:', productsWithDimensions);
+      
       setFormData({
         invoiceNumber: invoice.invoiceNumber,
         clientName: invoice.clientName,
         clientAddress: invoice.clientAddress,
         dateOfIssue: format(new Date(invoice.dateOfIssue), 'yyyy-MM-dd'),
         previousDues: invoice.previousDues || 0,
-        products: invoice.products
+        advancePaid: invoice.advancePaid || 0,
+        products: productsWithDimensions
       });
     } catch (error) {
+      console.error('Fetch error:', error);
       toast.error('Failed to fetch invoice');
     } finally {
       setFetchingInvoice(false);
@@ -126,22 +159,102 @@ export default function EditInvoicePage() {
     }
   };
 
+  /**
+   * Calculate all invoice totals using the centralized payment calculation logic
+   * This ensures consistency between UI, database, and PDF
+   */
   const calculateTotals = () => {
-    const totalAmount = formData.products.reduce((sum, p) => sum + (p.total || 0), 0);
-    const grandTotal = totalAmount + (parseFloat(formData.previousDues.toString()) || 0);
-    return { totalAmount, grandTotal };
+    // Calculate products total
+    const totalAmount = calculateProductsTotal(formData.products);
+    const previousDues = parseFloat(formData.previousDues.toString()) || 0;
+    
+    // Bill Total = Products Total + Previous Dues (this is the grand total before advance payment)
+    const billTotal = totalAmount + previousDues;
+    
+    // Use centralized payment calculation for advance payment and dues
+    const paymentResult = calculatePayment(billTotal, formData.advancePaid);
+    
+    return { 
+      totalAmount,           // Products total
+      previousDues,          // Previous outstanding dues
+      billTotal,             // Grand total (totalAmount + previousDues)
+      grandTotal: billTotal, // Legacy field - same as billTotal
+      advancePaid: paymentResult.advancePaid,
+      dues: paymentResult.dues,
+      isValid: paymentResult.isValid,
+      errorMessage: paymentResult.errorMessage
+    };
+  };
+
+  /**
+   * Handle advance payment input change with real-time validation
+   * This allows admin to dynamically update the advance payment
+   */
+  const handleAdvancePaymentChange = (value: string) => {
+    const advancePaid = parseFloat(value) || 0;
+    
+    // Update form data
+    setFormData({ ...formData, advancePaid });
+    
+    // Calculate totals using the current form data (before update)
+    const totalAmount = calculateProductsTotal(formData.products);
+    const previousDues = parseFloat(formData.previousDues.toString()) || 0;
+    const billTotal = totalAmount + previousDues;
+    
+    // Validate the new advance payment value
+    const paymentResult = calculatePayment(billTotal, advancePaid);
+    
+    // Set or clear error message
+    if (!paymentResult.isValid) {
+      setPaymentError(paymentResult.errorMessage || 'Invalid advance payment');
+    } else {
+      setPaymentError(null);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Calculate totals and validate before submission
+    const totals = calculateTotals();
+    
+    // Check for payment validation errors
+    if (!totals.isValid) {
+      toast.error(totals.errorMessage || 'Invalid payment details');
+      return;
+    }
+    
     setLoading(true);
 
-    const { totalAmount, grandTotal } = calculateTotals();
+    // Explicitly build products with all fields
+    const productsData = formData.products.map(p => {
+      console.log('Product before update:', p);
+      return {
+        name: p.name,
+        quantity: p.quantity,
+        unitCost: p.unitCost,
+        total: p.total,
+        width: p.width,
+        height: p.height,
+        sqft: p.sqft
+      };
+    });
+
     const invoiceData = {
-      ...formData,
-      totalAmount,
-      grandTotal
+      invoiceNumber: formData.invoiceNumber,
+      clientName: formData.clientName,
+      clientAddress: formData.clientAddress,
+      dateOfIssue: formData.dateOfIssue,
+      previousDues: formData.previousDues,
+      advancePaid: totals.advancePaid,
+      products: productsData,
+      totalAmount: totals.totalAmount,
+      grandTotal: totals.grandTotal,
+      billTotal: totals.billTotal,
+      dues: totals.dues
     };
+
+    console.log('Updating invoice data:', JSON.stringify(invoiceData, null, 2));
 
     try {
       await axios.put(`${API_URL}/api/invoices/${params.id}`, invoiceData);
@@ -166,7 +279,8 @@ export default function EditInvoicePage() {
     );
   }
 
-  const { totalAmount, grandTotal } = calculateTotals();
+  const { totalAmount, grandTotal, billTotal, advancePaid, dues, isValid } = calculateTotals();
+  const paymentStatus = getPaymentStatus(dues, billTotal);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -250,9 +364,10 @@ export default function EditInvoicePage() {
                 <input
                   type="number"
                   step="0.01"
-                  value={formData.previousDues}
+                  value={formData.previousDues || ''}
                   onChange={(e) => setFormData({ ...formData, previousDues: parseFloat(e.target.value) || 0 })}
                   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter previous dues if any"
                 />
               </div>
             </div>
@@ -342,7 +457,7 @@ export default function EditInvoicePage() {
                         step="0.01"
                         min="0"
                         value={product.width || ''}
-                        onChange={(e) => handleProductChange(index, 'width', parseFloat(e.target.value) || undefined)}
+                        onChange={(e) => handleProductChange(index, 'width', parseFloat(e.target.value) || 0)}
                         placeholder="Width"
                         className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
@@ -357,7 +472,7 @@ export default function EditInvoicePage() {
                         step="0.01"
                         min="0"
                         value={product.height || ''}
-                        onChange={(e) => handleProductChange(index, 'height', parseFloat(e.target.value) || undefined)}
+                        onChange={(e) => handleProductChange(index, 'height', parseFloat(e.target.value) || 0)}
                         placeholder="Height"
                         className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
@@ -401,19 +516,85 @@ export default function EditInvoicePage() {
 
           {/* Totals Summary */}
           <div className="bg-gray-50 rounded-lg p-6 mb-8">
-            <div className="max-w-sm ml-auto space-y-3">
+            <h3 className="text-lg font-semibold mb-4">Payment Summary</h3>
+            <div className="max-w-md ml-auto space-y-3">
+              {/* Products Total */}
               <div className="flex justify-between text-lg">
-                <span className="font-medium">Total:</span>
-                <span className="font-semibold">₹{totalAmount.toFixed(2)}</span>
+                <span className="font-medium">Products Total:</span>
+                <span className="font-semibold">{formatCurrency(totalAmount)}</span>
               </div>
+              
+              {/* Previous Dues */}
               <div className="flex justify-between text-lg">
                 <span className="font-medium">Previous Dues:</span>
-                <span className="font-semibold">₹{(parseFloat(formData.previousDues.toString()) || 0).toFixed(2)}</span>
+                <span className="font-semibold">{formatCurrency(parseFloat(formData.previousDues.toString()) || 0)}</span>
               </div>
+              
+              {/* Bill Total (Grand Total) */}
               <div className="flex justify-between text-xl border-t-2 border-gray-300 pt-3">
                 <span className="font-bold">Grand Total:</span>
-                <span className="font-bold text-blue-600">₹{grandTotal.toFixed(2)}</span>
+                <span className="font-bold text-blue-600">{formatCurrency(billTotal)}</span>
               </div>
+              
+              {/* Advance Payment Input - EDITABLE */}
+              <div className="pt-3 border-t border-gray-200">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Advance Payment (₹) - <span className="text-blue-600">Editable</span>
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  max={billTotal}
+                  value={formData.advancePaid || ''}
+                  onChange={(e) => handleAdvancePaymentChange(e.target.value)}
+                  className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    paymentError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  }`}
+                  placeholder="Enter advance payment amount"
+                />
+                {/* Payment Error Message */}
+                {paymentError && (
+                  <div className="mt-2 flex items-center gap-2 text-red-600 text-sm">
+                    <AlertCircle size={16} />
+                    <span>{paymentError}</span>
+                  </div>
+                )}
+                <p className="mt-1 text-xs text-gray-500">
+                  You can modify the advance payment amount. Dues will be recalculated automatically.
+                </p>
+              </div>
+              
+              {/* Advance Paid Display */}
+              <div className="flex justify-between text-lg">
+                <span className="font-medium">Advance Paid:</span>
+                <span className="font-semibold text-green-600">- {formatCurrency(advancePaid)}</span>
+              </div>
+              
+              {/* Dues / Balance */}
+              <div className="flex justify-between text-xl border-t-2 border-gray-300 pt-3">
+                <span className="font-bold">
+                  Dues / Balance:
+                  <span className={`ml-2 text-xs px-2 py-1 rounded-full ${getPaymentStatusBadge(paymentStatus)}`}>
+                    {paymentStatus === 'paid' ? 'PAID' : paymentStatus === 'partial' ? 'PARTIAL' : 'UNPAID'}
+                  </span>
+                </span>
+                <span className={`font-bold ${dues > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  {formatCurrency(dues)}
+                </span>
+              </div>
+              
+              {/* Payment Info Box */}
+              {dues === 0 && advancePaid > 0 && (
+                <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded text-green-700 text-sm">
+                  ✓ Invoice is fully paid. No remaining balance.
+                </div>
+              )}
+              {dues > 0 && (
+                <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-sm">
+                  ⚠ Remaining balance of {formatCurrency(dues)} is due.
+                </div>
+              )}
             </div>
           </div>
 
@@ -421,7 +602,7 @@ export default function EditInvoicePage() {
           <div className="flex gap-4">
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !isValid}
               className="flex-1 px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Updating Invoice...' : 'Update Invoice'}
