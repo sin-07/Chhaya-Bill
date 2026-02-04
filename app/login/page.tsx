@@ -10,6 +10,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const [blockMessage, setBlockMessage] = useState('');
+  const [unlockClicks, setUnlockClicks] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -34,9 +35,9 @@ export default function LoginPage() {
       const response = await fetch('/api/auth/check-block');
       const data = await response.json();
       
-      if (data.isBlocked) {
+      if (data.blocked) {
         setIsBlocked(true);
-        setBlockMessage(data.message);
+        setBlockMessage('Access permanently blocked. Contact developer to unlock.');
       }
     } catch (error) {
       console.error('Error checking block status:', error);
@@ -114,13 +115,13 @@ export default function LoginPage() {
 
       if (response.ok) {
         // Redirect to dashboard on successful login
-        router.push('/dashboard');
+        window.location.href = '/dashboard';
       } else {
-        if (data.isBlocked) {
+        if (data.blocked) {
           setIsBlocked(true);
-          setBlockMessage(data.message);
+          setBlockMessage(data.error || 'Access permanently blocked. Contact developer to unlock.');
         } else {
-          setError(data.message || 'Invalid code. Please try again.');
+          setError(data.error || 'Invalid code. Please try again.');
           setCode(['', '', '', '', '', '']);
           document.getElementById('code-0')?.focus();
         }
@@ -132,11 +133,42 @@ export default function LoginPage() {
     }
   };
 
+  const handleUnlockClick = async () => {
+    const newClicks = unlockClicks + 1;
+    setUnlockClicks(newClicks);
+    
+    if (newClicks >= 5) {
+      const secret = prompt('Enter developer unlock key:');
+      if (secret) {
+        try {
+          const res = await fetch(`/api/auth/unlock?secret=${secret}`);
+          if (res.ok) {
+            alert('Access unlocked successfully!');
+            setIsBlocked(false);
+            setUnlockClicks(0);
+          } else {
+            alert('Invalid unlock key');
+            setUnlockClicks(0);
+          }
+        } catch (error) {
+          alert('Unlock failed');
+          setUnlockClicks(0);
+        }
+      } else {
+        setUnlockClicks(0);
+      }
+    }
+  };
+
   if (isBlocked) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-900 via-red-800 to-red-900 px-4">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 text-center">
-          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div 
+            className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 cursor-pointer hover:bg-red-200 transition-colors"
+            onClick={handleUnlockClick}
+            title={unlockClicks > 0 ? `${5 - unlockClicks} more clicks to unlock` : 'Click 5 times to unlock'}
+          >
             <AlertCircle className="w-10 h-10 text-red-600" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Blocked</h1>

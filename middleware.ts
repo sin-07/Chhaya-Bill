@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   // Protect dashboard and invoice routes
   if (pathname.startsWith('/dashboard')) {
     try {
-      const token = request.cookies.get('admin_token')?.value;
+      const token = request.cookies.get('admin-token')?.value;
       
       if (!token) {
         const loginUrl = new URL('/login', request.url);
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
       
       const { payload } = await jwtVerify(token, JWT_SECRET);
       
-      if (payload.role !== 'admin') {
+      if (!payload.authenticated) {
         return NextResponse.redirect(new URL('/login', request.url));
       }
       

@@ -5,7 +5,7 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-supe
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.cookies.get('admin_token')?.value;
+    const token = request.cookies.get('admin-token')?.value;
     
     if (!token) {
       return NextResponse.json(
@@ -16,9 +16,9 @@ export async function GET(request: NextRequest) {
     
     const { payload } = await jwtVerify(token, JWT_SECRET);
     
-    if (payload.role === 'admin') {
+    if (payload.authenticated) {
       return NextResponse.json(
-        { authenticated: true, role: 'admin' },
+        { authenticated: true },
         { status: 200 }
       );
     }

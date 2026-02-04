@@ -1,40 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const MAX_ATTEMPTS = 3;
-const failedAttempts: Map<string, { count: number; blockedUntil?: number }> = new Map();
-
-function getClientIP(request: NextRequest): string {
-  const forwarded = request.headers.get('x-forwarded-for');
-  const realIP = request.headers.get('x-real-ip');
-  
-  if (forwarded) {
-    return forwarded.split(',')[0].trim();
-  }
-  
-  if (realIP) {
-    return realIP;
-  }
-  
-  return 'unknown';
-}
+import { loginAttempts } from '@/lib/loginAttempts';
 
 export async function GET(request: NextRequest) {
-  const clientIP = getClientIP(request);
-  const attempt = failedAttempts.get(clientIP);
-  
-  if (!attempt || !attempt.blockedUntil) {
-    return NextResponse.json({ isBlocked: false });
-  }
-  
-  if (attempt.blockedUntil > Date.now()) {
-    const minutesLeft = Math.ceil((attempt.blockedUntil - Date.now()) / 60000);
+  try {
+    const ip = request.headers.get('x-forwarded-for') || 
+               request.headers.get('x-real-ip') || 
+               'unknown';
+
+    const attempt = loginAttempts.get(ip);
+
+    if (attempt?.isPermanentlyBlocked) {
+      return NextResponse.json({
+        blocked: true,
+        permanent: true
+      });
+    }
+
     return NextResponse.json({
-      isBlocked: true,
-      message: `Too many failed attempts. Please try again in ${minutesLeft} minute(s).`
+      blocked: false,
+      attemptsLeft: attempt ? Math.max(0, 3 - attempt.failedAttempts) : 3
     });
+  } catch (error) {
+    console.error('Check block error:', error);
+    return NextResponse.json({ blocked: false, attemptsLeft: 3 });
   }
-  
-  // Block expired
-  failedAttempts.delete(clientIP);
-  return NextResponse.json({ isBlocked: false });
 }
