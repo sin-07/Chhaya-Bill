@@ -15,6 +15,15 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+/* Fix for Lucide icons not rendering */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+  stroke-width: 2;
+  stroke: currentColor;
+  fill: none;
+}
+
 /* Print-specific styles */
 @media print {
   @page {

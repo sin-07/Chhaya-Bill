@@ -104,19 +104,19 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
   }
 
   return (
-    <div className="min-h-screen bg-gray-200 py-8">
+    <div className="min-h-screen bg-gray-200 py-4 sm:py-8">
       {/* Action Buttons - Hidden on print */}
-      <div className="no-print max-w-[210mm] mx-auto mb-4 flex gap-4 justify-end px-4">
+      <div className="no-print max-w-[210mm] mx-auto mb-4 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-end px-2 sm:px-4">
         <button
           onClick={handlePrint}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm sm:text-base w-full sm:w-auto"
         >
           <Printer size={18} />
           Print Invoice
         </button>
         <button
           onClick={handleDownloadPDF}
-          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm sm:text-base w-full sm:w-auto"
         >
           <Download size={18} />
           Download PDF
@@ -148,10 +148,10 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
             }}>
               <span style={{ color: '#4D55CC' }}>CHHAYA </span>
               <span style={{ color: '#228B22' }}>PRINTING </span>
-              <span style={{ color: '#000000' }}>SOLUTION</span>
+              <span style={{ color: '#cc0000' }}>SOLUTION</span>
             </h1>
             <p style={{ fontSize: '13px', margin: '2px 0', color: '#0C0950', fontWeight: 'bold' }}>
-              (A Complete Advertising Solution)
+              (Your Perfect Printing Partner)
             </p>
             <p style={{ fontSize: '12px', margin: '2px 0' }}>
               Bajrangpuri,Opposite to Power Grid Patna 800007
@@ -162,7 +162,7 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
           </div>
 
           {/* Right Side - Logo Image */}
-          <div style={{ width: '90px', height: '90px' }}>
+          <div style={{ width: '90px', height: '90px', position: 'relative', left: '-80px' }}>
             <img 
               src="/logoC.jpeg?v=2" 
               alt="Chhaya Printing Solution Logo" 
@@ -218,7 +218,7 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
                 <tr>
                   <th style={{ ...tableHeaderStyle, width: '40px' }}>S.NO</th>
                   <th style={{ ...tableHeaderStyle, width: 'auto' }}>Product</th>
-                  <th style={{ ...tableHeaderStyle, width: '60px' }}>QYT</th>
+                  <th style={{ ...tableHeaderStyle, width: '60px' }}>Qty.</th>
                   <th style={{ ...tableHeaderStyle, width: '80px' }}>Unit/cost</th>
                   <th style={{ ...tableHeaderStyle, width: '80px' }}>Total</th>
                 </tr>
@@ -270,7 +270,7 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
                   <tr>
                     <td style={{ border: 'none' }} colSpan={3}></td>
                     <td style={{ ...tableCellStyle, fontWeight: 'bold', backgroundColor: '#FFB6C1', textAlign: 'center' }}>
-                      Previous Dues
+                      Prev. Dues
                     </td>
                     <td style={{ ...tableCellStyle, textAlign: 'center', fontWeight: 'bold', backgroundColor: '#FFB6C1' }}>
                       {invoice.previousDues}
@@ -282,7 +282,7 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
                   <tr>
                     <td style={{ border: 'none' }} colSpan={3}></td>
                     <td style={{ ...tableCellStyle, fontWeight: 'bold', backgroundColor: '#90EE90', textAlign: 'center' }}>
-                      ADV PAID
+                      Adv. Paid
                     </td>
                     <td style={{ ...tableCellStyle, textAlign: 'center', fontWeight: 'bold', backgroundColor: '#90EE90' }}>
                       {invoice.advancePaid ?? 0}
@@ -360,7 +360,7 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
             color: '#000',
             fontStyle: 'italic'
           }}>
-            Total
+            {/* Total */}
           </p>
         </div>
       </div>

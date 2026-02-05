@@ -13,8 +13,7 @@ import {
   getPaymentStatus,
   getPaymentStatusBadge
 } from '@/lib/paymentCalculations';
-
-const API_URL = '';
+import { API_URL } from '@/lib/api';
 
 interface Product {
   name: string;

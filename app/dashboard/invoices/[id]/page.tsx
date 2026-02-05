@@ -5,8 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import axios from 'axios';
 import InvoiceLayout from '@/components/InvoiceLayout';
 import { ArrowLeft } from 'lucide-react';
-
-const API_URL = '';
+import { API_URL } from '@/lib/api';
 
 interface Product {
   name: string;
@@ -72,10 +71,10 @@ export default function ViewInvoicePage() {
 
   return (
     <div>
-      <div className="no-print max-w-4xl mx-auto px-4 py-4">
+      <div className="no-print max-w-4xl mx-auto px-2 sm:px-4 py-2 sm:py-4">
         <button
           onClick={() => router.push('/dashboard')}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm sm:text-base"
         >
           <ArrowLeft size={20} />
           Back to Dashboard

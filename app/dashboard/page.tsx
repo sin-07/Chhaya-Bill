@@ -19,8 +19,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { getPaymentStatus, getPaymentStatusBadge, formatCurrency } from '@/lib/paymentCalculations';
-
-const API_URL = '';
+import { API_URL } from '@/lib/api';
 
 interface Product {
   name: string;

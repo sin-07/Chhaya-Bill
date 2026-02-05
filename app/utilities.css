@@ -1,6 +1,38 @@
-svg {
+/* SVG styles - but preserve icon dimensions */
+svg:not([width]):not([height]) {
   max-width: 100%;
   height: auto;
+}
+
+/* Ensure lucide icons render properly */
+svg[class*="lucide"] {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+}
+
+/* Larger, more visible icons for mobile devices */
+@media (max-width: 768px) {
+  /* Make button icons larger and easier to tap on mobile */
+  button svg,
+  a svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  /* Stats card icons on mobile */
+  .bg-blue-100 svg,
+  .bg-green-100 svg,
+  .bg-orange-100 svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  
+  /* Increase button padding for better mobile UX */
+  button {
+    padding: 12px !important;
+  }
 }
 
 /* Custom scrollbar */
