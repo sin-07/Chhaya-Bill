@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,14 +7,8 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
     
-    // Clear the admin token cookie
-    response.cookies.set('admin_token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 0,
-      path: '/',
-    });
+    // Clear the admin token cookie (note: cookie name is 'admin-token' not 'admin_token')
+    response.cookies.delete('admin-token');
     
     return response;
   } catch (error) {

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // Utility to get the correct API URL based on environment
 export function getApiUrl(): string {
   // Check if we're in the browser
@@ -13,3 +15,7 @@ export function getApiUrl(): string {
 
 // For client-side usage - always use same-origin to avoid CORS
 export const API_URL = '';
+
+// Configure axios defaults to include credentials (cookies)
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common['Content-Type'] = 'application/json';

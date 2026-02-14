@@ -326,14 +326,6 @@ export default function NewInvoicePage() {
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Products</h2>
-              <button
-                type="button"
-                onClick={addProduct}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-              >
-                <Plus size={18} />
-                Add Product
-              </button>
             </div>
 
             <div className="space-y-4">
@@ -461,6 +453,15 @@ export default function NewInvoicePage() {
                 </div>
               ))}
             </div>
+
+            <button
+              type="button"
+              onClick={addProduct}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mt-4"
+            >
+              <Plus size={18} />
+              Add Product
+            </button>
           </div>
 
           {/* Totals Summary */}

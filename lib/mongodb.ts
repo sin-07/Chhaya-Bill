@@ -1,4 +1,8 @@
 import mongoose from 'mongoose';
+import dns from 'dns';
+
+// Force Node.js to use Google DNS so SRV lookups work on restricted networks
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 
@@ -34,6 +38,7 @@ async function dbConnect() {
       connectTimeoutMS: 30000, // Added connection timeout
       retryWrites: true,
       retryReads: true,
+      family: 4, // Force IPv4
     };
 
     console.log('Connecting to MongoDB...', MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//***:***@'));

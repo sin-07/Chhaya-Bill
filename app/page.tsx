@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { 
   Menu, 
   X, 
@@ -25,6 +27,27 @@ import {
   Linkedin
 } from 'lucide-react';
 
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 60 },
+  visible: { opacity: 1, y: 0 }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 }
+};
+
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [feedbackForm, setFeedbackForm] = useState({
@@ -40,36 +63,44 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section id="home" className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white">
+      <section id="home" aria-label="Hero" className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                About Chhaya Printing Solution
-              </h1>
-              <p className="text-xl md:text-2xl text-blue-100 mb-8">
-                Transforming Ideas into High-Quality Prints with Precision and Creativity
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a href="#services" className="bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2">
-                  Our Services <ArrowRight size={20} />
-                </a>
-                <a href="#feedback" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition-colors flex items-center justify-center gap-2">
-                  Get in Touch
-                </a>
-              </div>
-            </div>
-            <div className="hidden md:flex justify-center">
-              <div className="relative">
-                <div className="w-72 h-72 bg-blue-700 rounded-full opacity-20 absolute -top-4 -left-4"></div>
-                <div className="w-72 h-72 bg-white rounded-2xl shadow-2xl flex items-center justify-center relative">
-                  <Printer className="w-32 h-32 text-blue-600" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+            className="max-w-4xl"
+          >
+            <motion.h1 
+              variants={fadeInUp}
+              transition={{ duration: 0.6 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+              itemProp="name"
+            >
+              About Chhaya Printing Solution
+            </motion.h1>
+            <motion.p 
+              variants={fadeInUp}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-xl md:text-2xl text-blue-100 mb-8"
+            >
+              Transforming Ideas into High-Quality Prints with Precision and Creativity
+            </motion.p>
+            <motion.div 
+              variants={fadeInUp}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <a href="#services" className="bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 hover:scale-105 transform duration-200">
+                Our Services <ArrowRight size={20} />
+              </a>
+              <a href="#feedback" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition-colors flex items-center justify-center gap-2 hover:scale-105 transform duration-200">
+                Get in Touch
+              </a>
+            </motion.div>
+          </motion.div>
         </div>
         
         {/* Wave Divider */}
@@ -81,46 +112,83 @@ export default function Home() {
       </section>
 
       {/* Our Expertise Section */}
-      <section className="py-16 md:py-24 bg-white">
+      <section aria-label="Our Expertise" className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Expertise</h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               With years of experience in the printing industry, we specialize in producing high-quality prints for businesses, events, and personal needs. From business cards to large-format banners, our services cater to all your printing demands.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            <motion.div 
+              variants={scaleIn}
+              transition={{ duration: 0.5 }}
+              className="bg-gray-50 rounded-xl p-8 text-center hover:shadow-lg transition-all hover:-translate-y-2 duration-300"
+            >
+              <motion.div 
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+                className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+              >
                 <Award className="w-8 h-8 text-blue-600" />
-              </div>
+              </motion.div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Premium Quality</h3>
               <p className="text-gray-600">We use the finest materials and advanced printing techniques to deliver exceptional results every time.</p>
-            </div>
+            </motion.div>
 
-            <div className="bg-gray-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <motion.div 
+              variants={scaleIn}
+              transition={{ duration: 0.5 }}
+              className="bg-gray-50 rounded-xl p-8 text-center hover:shadow-lg transition-all hover:-translate-y-2 duration-300"
+            >
+              <motion.div 
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+                className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+              >
                 <Clock className="w-8 h-8 text-blue-600" />
-              </div>
+              </motion.div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Timely Delivery</h3>
               <p className="text-gray-600">We understand the importance of deadlines and ensure your projects are completed on time.</p>
-            </div>
+            </motion.div>
 
-            <div className="bg-gray-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <motion.div 
+              variants={scaleIn}
+              transition={{ duration: 0.5 }}
+              className="bg-gray-50 rounded-xl p-8 text-center hover:shadow-lg transition-all hover:-translate-y-2 duration-300"
+            >
+              <motion.div 
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+                className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+              >
                 <Shield className="w-8 h-8 text-blue-600" />
-              </div>
+              </motion.div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Trusted Service</h3>
               <p className="text-gray-600">Years of experience and countless satisfied customers make us a trusted name in printing.</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 md:py-24 bg-gray-50">
+      <section aria-label="Why Choose Us" className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -198,7 +266,7 @@ export default function Home() {
       </section>
 
       {/* Our Vision Section */}
-      <section className="py-16 md:py-24 bg-blue-900 text-white">
+      <section aria-label="Our Vision and Commitment" className="py-16 md:py-24 bg-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Vision & Commitment</h2>
@@ -237,55 +305,100 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-16 md:py-24 bg-white">
+      <section id="services" aria-label="Our Printing Services" className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               We offer a comprehensive range of printing services to meet all your needs
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl transition-shadow group">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            <motion.div 
+              variants={scaleIn}
+              whileHover={{ y: -10, boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.15)" }}
+              className="bg-white border border-gray-200 rounded-xl p-6 transition-all group cursor-pointer"
+            >
+              <motion.div 
+                whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                transition={{ duration: 0.5 }}
+                className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+              >
                 <Printer className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
-              </div>
+              </motion.div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Offset & Digital Printing</h3>
               <p className="text-gray-600 text-sm">High-volume offset and quick-turnaround digital printing solutions for all your needs.</p>
-            </div>
+            </motion.div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl transition-shadow group">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors">
+            <motion.div 
+              variants={scaleIn}
+              whileHover={{ y: -10, boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.15)" }}
+              className="bg-white border border-gray-200 rounded-xl p-6 transition-all group cursor-pointer"
+            >
+              <motion.div 
+                whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                transition={{ duration: 0.5 }}
+                className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+              >
                 <svg className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <rect x="3" y="4" width="18" height="14" rx="2" strokeWidth="2"/>
                   <path d="M7 8h10M7 12h6" strokeWidth="2" strokeLinecap="round"/>
                 </svg>
-              </div>
+              </motion.div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Business Cards & Brochures</h3>
               <p className="text-gray-600 text-sm">Professional business cards and informative brochures that make lasting impressions.</p>
-            </div>
+            </motion.div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl transition-shadow group">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors">
+            <motion.div 
+              variants={scaleIn}
+              whileHover={{ y: -10, boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.15)" }}
+              className="bg-white border border-gray-200 rounded-xl p-6 transition-all group cursor-pointer"
+            >
+              <motion.div 
+                whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                transition={{ duration: 0.5 }}
+                className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+              >
                 <svg className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <rect x="2" y="3" width="20" height="18" rx="2" strokeWidth="2"/>
                   <path d="M2 9h20M9 21V9" strokeWidth="2"/>
                 </svg>
-              </div>
+              </motion.div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Large Format Printing</h3>
               <p className="text-gray-600 text-sm">Eye-catching banners, posters, and signage for maximum visual impact.</p>
-            </div>
+            </motion.div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl transition-shadow group">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors">
+            <motion.div 
+              variants={scaleIn}
+              whileHover={{ y: -10, boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.15)" }}
+              className="bg-white border border-gray-200 rounded-xl p-6 transition-all group cursor-pointer"
+            >
+              <motion.div 
+                whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                transition={{ duration: 0.5 }}
+                className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+              >
                 <Star className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
-              </div>
+              </motion.div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Custom Branding Materials</h3>
               <p className="text-gray-600 text-sm">Personalized branding solutions including letterheads, envelopes, and more.</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Services List */}
           <div className="mt-16 bg-gray-50 rounded-2xl p-8">
@@ -320,7 +433,7 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-16 md:py-24 bg-gray-50">
+      <section id="about" aria-label="About Chhaya Printing Solution" className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="bg-blue-600 rounded-2xl p-8 text-white">
@@ -377,7 +490,7 @@ export default function Home() {
       </section>
 
       {/* Feedback Section */}
-      <section id="feedback" className="py-16 md:py-24 bg-white">
+      <section id="feedback" aria-label="Contact Chhaya Printing Solution" className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
@@ -477,23 +590,30 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center mb-4">
-                <Printer className="h-8 w-8 text-blue-400" />
-                <span className="ml-2 text-xl font-bold">Chhaya Printing Solution</span>
+                <div className="relative h-10 w-10">
+                  <Image
+                    src="/logoC.jpeg"
+                    alt="Chhaya Printing Solution Logo"
+                    fill
+                    className="object-contain rounded"
+                  />
+                </div>
+                <span className="ml-3 text-xl font-bold">Chhaya Printing Solution</span>
               </div>
               <p className="text-gray-400 mb-4">
                 Transforming ideas into high-quality prints with precision and creativity. Your trusted printing partner in Patna.
               </p>
               <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a href="#" aria-label="Facebook" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
                   <Facebook size={20} />
                 </a>
-                <a href="#" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a href="#" aria-label="Instagram" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
                   <Instagram size={20} />
                 </a>
-                <a href="#" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a href="#" aria-label="Twitter" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
                   <Twitter size={20} />
                 </a>
-                <a href="#" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
                   <Linkedin size={20} />
                 </a>
               </div>
@@ -521,10 +641,10 @@ export default function Home() {
           </div>
 
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>Copyright 2024 Chhaya Printing Solution. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Chhaya Printing Solution. All rights reserved.</p>
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }

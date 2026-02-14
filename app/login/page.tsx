@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
@@ -20,7 +22,9 @@ export default function LoginPage() {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch('/api/auth/verify');
+      const response = await fetch('/api/auth/verify', {
+        credentials: 'include'
+      });
       if (response.ok) {
         // User is already logged in, redirect to dashboard
         router.push('/dashboard');
@@ -32,7 +36,9 @@ export default function LoginPage() {
 
   const checkBlockStatus = async () => {
     try {
-      const response = await fetch('/api/auth/check-block');
+      const response = await fetch('/api/auth/check-block', {
+        credentials: 'include'
+      });
       const data = await response.json();
       
       if (data.blocked) {
@@ -108,6 +114,7 @@ export default function LoginPage() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ code: fullCode }),
       });
 
@@ -163,41 +170,86 @@ export default function LoginPage() {
   if (isBlocked) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-900 via-red-800 to-red-900 px-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 text-center">
-          <div 
+        <motion.div 
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", damping: 15 }}
+          className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 text-center"
+        >
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.1, 1],
+              rotate: [0, 5, -5, 0]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
             className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 cursor-pointer hover:bg-red-200 transition-colors"
             onClick={handleUnlockClick}
             title={unlockClicks > 0 ? `${5 - unlockClicks} more clicks to unlock` : 'Click 5 times to unlock'}
           >
             <AlertCircle className="w-10 h-10 text-red-600" />
-          </div>
+          </motion.div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Blocked</h1>
           <p className="text-gray-600 mb-6">{blockMessage}</p>
           <p className="text-sm text-gray-500">
             If you believe this is an error, please contact the system administrator.
           </p>
-        </div>
+        </motion.div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 px-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-8 h-8 text-blue-600" />
-          </div>
+      <motion.div 
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", damping: 15, stiffness: 100 }}
+        className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8"
+      >
+        <motion.div 
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          className="text-center mb-8"
+        >
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ 
+              duration: 2,
+              delay: 0.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="relative w-20 h-20 mx-auto mb-4"
+          >
+            <Image
+              src="/logoC.jpeg"
+              alt="Chhaya Printing Solution Logo"
+              fill
+              className="object-contain rounded-lg"
+              priority
+            />
+          </motion.div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Login</h1>
           <p className="text-gray-600">Enter your 6-digit access code</p>
-        </div>
+        </motion.div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <div className="flex gap-3 justify-center" onPaste={handlePaste}>
               {code.map((digit, index) => (
-                <input
+                <motion.input
                   key={index}
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 + index * 0.05 }}
+                  whileFocus={{ scale: 1.1 }}
                   id={`code-${index}`}
                   type="text"
                   inputMode="numeric"
@@ -205,7 +257,7 @@ export default function LoginPage() {
                   value={digit}
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="w-12 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-12 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   disabled={loading}
                   autoComplete="off"
                 />
@@ -213,14 +265,26 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-red-700">
-              <AlertCircle className="w-5 h-5 flex-shrink-0" />
-              <span className="text-sm">{error}</span>
-            </div>
-          )}
+          <AnimatePresence>
+            {error && (
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-red-700">
+                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                  <span className="text-sm">{error}</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loading || code.some(d => !d)}
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
@@ -233,7 +297,7 @@ export default function LoginPage() {
             ) : (
               'Login'
             )}
-          </button>
+          </motion.button>
         </form>
 
         <div className="mt-6 text-center">
@@ -245,7 +309,7 @@ export default function LoginPage() {
         <div className="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
           <p>3 unsuccessful attempts will block access</p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

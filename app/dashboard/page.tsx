@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, 
   Search, 
@@ -57,6 +58,34 @@ interface InvoicesResponse {
   currentPage: number;
   total: number;
 }
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
+
+const statsVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100
+    }
+  }
+};
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -123,6 +152,7 @@ export default function DashboardPage() {
       toast.success('Logged out successfully');
       router.push('/login');
     } catch (error) {
+      console.error('Logout error:', error);
       toast.error('Failed to logout');
     }
   };
@@ -149,41 +179,91 @@ export default function DashboardPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="bg-white rounded-lg shadow p-6">
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6"
+          >
+            <motion.div 
+              variants={statsVariants}
+              whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              className="bg-white rounded-lg shadow p-6 cursor-pointer"
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Total Invoices</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.totalInvoices}</p>
+                  <motion.p 
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, type: "spring" }}
+                    className="text-3xl font-bold text-gray-900"
+                  >
+                    {stats.totalInvoices}
+                  </motion.p>
                 </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <motion.div 
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                  className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"
+                >
                   <FileText className="text-blue-600" size={24} />
-                </div>
+                </motion.div>
               </div>
-            </div>
-            <div className="bg-white rounded-lg shadow p-6">
+            </motion.div>
+            <motion.div 
+              variants={statsVariants}
+              whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              className="bg-white rounded-lg shadow p-6 cursor-pointer"
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Total Revenue</p>
-                  <p className="text-3xl font-bold text-green-600">₹{stats.totalRevenue.toLocaleString()}</p>
+                  <motion.p 
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4, type: "spring" }}
+                    className="text-3xl font-bold text-green-600"
+                  >
+                    ₹{stats.totalRevenue.toLocaleString()}
+                  </motion.p>
                 </div>
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <motion.div 
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                  className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"
+                >
                   <DollarSign className="text-green-600" size={24} />
-                </div>
+                </motion.div>
               </div>
-            </div>
-            <div className="bg-white rounded-lg shadow p-6">
+            </motion.div>
+            <motion.div 
+              variants={statsVariants}
+              whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              className="bg-white rounded-lg shadow p-6 cursor-pointer"
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Pending Dues</p>
-                  <p className="text-3xl font-bold text-orange-600">₹{stats.pendingDues.toLocaleString()}</p>
+                  <motion.p 
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5, type: "spring" }}
+                    className="text-3xl font-bold text-orange-600"
+                  >
+                    ₹{stats.pendingDues.toLocaleString()}
+                  </motion.p>
                 </div>
-                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                <motion.div 
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                  className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center"
+                >
                   <AlertCircle className="text-orange-600" size={24} />
-                </div>
+                </motion.div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
 
         <div className="bg-white rounded-lg shadow p-6 mb-6">

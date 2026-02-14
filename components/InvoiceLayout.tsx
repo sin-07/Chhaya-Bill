@@ -79,19 +79,24 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
     if (!invoiceRef.current || !invoice) return;
 
     const element = invoiceRef.current;
+    
+    // High-quality canvas capture with increased scale for logo clarity
     const canvas = await html2canvas(element, {
-      scale: 3,
+      scale: 4, // Increased from 3 to 4 for better logo quality
       useCORS: true,
+      allowTaint: true,
       logging: false,
       backgroundColor: '#ffffff',
+      imageTimeout: 0,
+      removeContainer: true,
     } as any);
 
-    const imgData = canvas.toDataURL('image/png');
+    const imgData = canvas.toDataURL('image/jpeg', 1.0); // Use JPEG with max quality
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
     pdf.save(`Invoice-${invoice.invoiceNumber}.pdf`);
   };
 
@@ -136,7 +141,7 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
         }}
       >
         {/* ============ HEADER SECTION ============ */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', gap: '20px' }}>
           {/* Left Side - Company Info */}
           <div style={{ flex: 1, textAlign: 'center' }}>
             <h1 style={{ 
@@ -162,14 +167,32 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
           </div>
 
           {/* Right Side - Logo Image */}
-          <div style={{ width: '90px', height: '90px', position: 'relative', left: '-80px' }}>
+          <div style={{ 
+            width: '120px', 
+            height: '120px', 
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: '80px'
+          }}>
             <img 
-              src="/logoC.jpeg?v=2" 
+              src="/logoC.jpeg" 
               alt="Chhaya Printing Solution Logo" 
-              style={{ width: '90px', height: '90px', objectFit: 'contain' }}
+              style={{ 
+                width: '120px', 
+                height: '120px', 
+                objectFit: 'contain',
+                WebkitBackfaceVisibility: 'hidden',
+                backfaceVisibility: 'hidden',
+                transform: 'translateZ(0)',
+                maxWidth: '100%',
+                display: 'block'
+              } as React.CSSProperties}
+              crossOrigin="anonymous"
+              loading="eager"
               onError={(e) => { console.error('Logo failed to load'); }}
             />
-         
           </div>
         </div>
 
