@@ -114,14 +114,14 @@ export default function InvoiceLayout({ invoice, onPrint, onDownload }: InvoiceL
       <div className="no-print max-w-[210mm] mx-auto mb-4 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-end px-2 sm:px-4">
         <button
           onClick={handlePrint}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm sm:text-base w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-neutral-900 text-white rounded hover:bg-neutral-800 text-sm sm:text-base w-full sm:w-auto"
         >
           <Printer size={18} />
           Print Invoice
         </button>
         <button
           onClick={handleDownloadPDF}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm sm:text-base w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-neutral-700 text-white rounded hover:bg-neutral-600 text-sm sm:text-base w-full sm:w-auto"
         >
           <Download size={18} />
           Download PDF

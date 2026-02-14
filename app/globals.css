@@ -157,11 +157,11 @@ html {
   font-size: 28px;
   font-weight: bold;
   letter-spacing: 2px;
-  color: #1e5a9e;
+  color: #111111;
 }
 
 .invoice-header-green {
-  color: #2d8659;
+  color: #333333;
 }
 
 /* QR Code positioning */

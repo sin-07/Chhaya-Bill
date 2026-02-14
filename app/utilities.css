@@ -22,9 +22,7 @@ svg[class*="lucide"] {
   }
   
   /* Stats card icons on mobile */
-  .bg-blue-100 svg,
-  .bg-green-100 svg,
-  .bg-orange-100 svg {
+  .bg-neutral-100 svg {
     width: 28px !important;
     height: 28px !important;
   }
@@ -105,7 +103,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #171717;
   outline-offset: 2px;
 }
 

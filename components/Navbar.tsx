@@ -45,20 +45,20 @@ export default function Navbar() {
                 href={`/#${item}`}
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.2 }}
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                className="text-gray-700 hover:text-neutral-900 font-medium transition-colors"
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}
               </motion.a>
             ))}
             {isDashboard ? (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/dashboard" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <Link href="/dashboard" className="bg-neutral-900 text-white px-4 py-2 rounded-lg hover:bg-neutral-800 transition-colors">
                   Dashboard
                 </Link>
               </motion.div>
             ) : (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <Link href="/login" className="bg-neutral-900 text-white px-4 py-2 rounded-lg hover:bg-neutral-800 transition-colors">
                   Admin Login
                 </Link>
               </motion.div>
@@ -69,7 +69,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-700 hover:text-blue-600"
+              className="text-gray-700 hover:text-neutral-900"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -115,7 +115,7 @@ export default function Navbar() {
                     hidden: { x: -20, opacity: 0 },
                     visible: { x: 0, opacity: 1 }
                   }}
-                  className="block text-gray-700 hover:text-blue-600 font-medium"
+                  className="block text-gray-700 hover:text-neutral-900 font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.label}
@@ -128,11 +128,11 @@ export default function Navbar() {
                 }}
               >
                 {isDashboard ? (
-                  <Link href="/dashboard" className="block bg-blue-600 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-700">
+                  <Link href="/dashboard" className="block bg-neutral-900 text-white px-4 py-2 rounded-lg text-center hover:bg-neutral-800">
                     Dashboard
                   </Link>
                 ) : (
-                  <Link href="/login" className="block bg-blue-600 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-700">
+                  <Link href="/login" className="block bg-neutral-900 text-white px-4 py-2 rounded-lg text-center hover:bg-neutral-800">
                     Admin Login
                   </Link>
                 )}

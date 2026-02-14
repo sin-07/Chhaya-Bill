@@ -65,7 +65,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section id="home" aria-label="Hero" className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden">
+      <section id="home" aria-label="Hero" className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <motion.div
             initial="hidden"
@@ -84,7 +84,7 @@ export default function Home() {
             <motion.p 
               variants={fadeInUp}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl text-blue-100 mb-8"
+              className="text-xl md:text-2xl text-neutral-300 mb-8"
             >
               Transforming Ideas into High-Quality Prints with Precision and Creativity
             </motion.p>
@@ -93,10 +93,10 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <a href="#services" className="bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 hover:scale-105 transform duration-200">
+              <a href="#services" className="bg-white text-neutral-900 px-8 py-3 rounded-lg font-semibold hover:bg-neutral-100 transition-colors flex items-center justify-center gap-2 hover:scale-105 transform duration-200">
                 Our Services <ArrowRight size={20} />
               </a>
-              <a href="#feedback" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition-colors flex items-center justify-center gap-2 hover:scale-105 transform duration-200">
+              <a href="#feedback" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 hover:scale-105 transform duration-200">
                 Get in Touch
               </a>
             </motion.div>
@@ -123,7 +123,7 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Expertise</h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
+            <div className="w-24 h-1 bg-neutral-900 mx-auto mb-6"></div>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               With years of experience in the printing industry, we specialize in producing high-quality prints for businesses, events, and personal needs. From business cards to large-format banners, our services cater to all your printing demands.
             </p>
@@ -144,9 +144,9 @@ export default function Home() {
               <motion.div 
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
-                className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+                className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-6"
               >
-                <Award className="w-8 h-8 text-blue-600" />
+                <Award className="w-8 h-8 text-neutral-800" />
               </motion.div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Premium Quality</h3>
               <p className="text-gray-600">We use the finest materials and advanced printing techniques to deliver exceptional results every time.</p>
@@ -160,9 +160,9 @@ export default function Home() {
               <motion.div 
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
-                className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+                className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-6"
               >
-                <Clock className="w-8 h-8 text-blue-600" />
+                <Clock className="w-8 h-8 text-neutral-800" />
               </motion.div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Timely Delivery</h3>
               <p className="text-gray-600">We understand the importance of deadlines and ensure your projects are completed on time.</p>
@@ -176,9 +176,9 @@ export default function Home() {
               <motion.div 
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
-                className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+                className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-6"
               >
-                <Shield className="w-8 h-8 text-blue-600" />
+                <Shield className="w-8 h-8 text-neutral-800" />
               </motion.div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Trusted Service</h3>
               <p className="text-gray-600">Years of experience and countless satisfied customers make us a trusted name in printing.</p>
@@ -193,14 +193,14 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Us?</h2>
-              <div className="w-24 h-1 bg-blue-600 mb-6"></div>
+              <div className="w-24 h-1 bg-neutral-900 mb-6"></div>
               <p className="text-lg text-gray-600 mb-8">
                 We use state-of-the-art printing technology and premium materials to ensure perfection in every print. Our team is committed to delivering timely and cost-effective solutions without compromising on quality.
               </p>
               
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-neutral-900 rounded-lg flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -210,7 +210,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-neutral-900 rounded-lg flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -220,7 +220,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-neutral-900 rounded-lg flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -230,7 +230,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-neutral-900 rounded-lg flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -243,20 +243,20 @@ export default function Home() {
 
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <div className="grid grid-cols-2 gap-6">
-                <div className="text-center p-6 bg-blue-50 rounded-xl">
-                  <div className="text-4xl font-bold text-blue-600 mb-2">10+</div>
+                <div className="text-center p-6 bg-neutral-50 rounded-xl">
+                  <div className="text-4xl font-bold text-neutral-900 mb-2">10+</div>
                   <div className="text-gray-600">Years Experience</div>
                 </div>
-                <div className="text-center p-6 bg-blue-50 rounded-xl">
-                  <div className="text-4xl font-bold text-blue-600 mb-2">5000+</div>
+                <div className="text-center p-6 bg-neutral-50 rounded-xl">
+                  <div className="text-4xl font-bold text-neutral-900 mb-2">5000+</div>
                   <div className="text-gray-600">Happy Customers</div>
                 </div>
-                <div className="text-center p-6 bg-blue-50 rounded-xl">
-                  <div className="text-4xl font-bold text-blue-600 mb-2">15000+</div>
+                <div className="text-center p-6 bg-neutral-50 rounded-xl">
+                  <div className="text-4xl font-bold text-neutral-900 mb-2">15000+</div>
                   <div className="text-gray-600">Projects Completed</div>
                 </div>
-                <div className="text-center p-6 bg-blue-50 rounded-xl">
-                  <div className="text-4xl font-bold text-blue-600 mb-2">100%</div>
+                <div className="text-center p-6 bg-neutral-50 rounded-xl">
+                  <div className="text-4xl font-bold text-neutral-900 mb-2">100%</div>
                   <div className="text-gray-600">Satisfaction Rate</div>
                 </div>
               </div>
@@ -266,12 +266,12 @@ export default function Home() {
       </section>
 
       {/* Our Vision Section */}
-      <section aria-label="Our Vision and Commitment" className="py-16 md:py-24 bg-blue-900 text-white">
+      <section aria-label="Our Vision and Commitment" className="py-16 md:py-24 bg-neutral-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Vision & Commitment</h2>
             <div className="w-24 h-1 bg-white mx-auto mb-6"></div>
-            <p className="text-lg text-blue-100 max-w-3xl mx-auto">
+            <p className="text-lg text-neutral-300 max-w-3xl mx-auto">
               Founded by <span className="font-semibold text-white">Shubham Kumar</span> and <span className="font-semibold text-white">Awdhesh Kumar</span> in Patna, our goal is to revolutionize the printing industry by offering eco-friendly, innovative, and high-quality printing services that exceed customer expectations.
             </p>
           </div>
@@ -282,7 +282,7 @@ export default function Home() {
                 <Target className="w-10 h-10 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Innovation</h3>
-              <p className="text-blue-100">Constantly evolving with the latest printing technologies and techniques</p>
+              <p className="text-neutral-300">Constantly evolving with the latest printing technologies and techniques</p>
             </div>
 
             <div className="text-center">
@@ -290,7 +290,7 @@ export default function Home() {
                 <Leaf className="w-10 h-10 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Eco-Friendly</h3>
-              <p className="text-blue-100">Committed to sustainable printing practices and materials</p>
+              <p className="text-neutral-300">Committed to sustainable printing practices and materials</p>
             </div>
 
             <div className="text-center">
@@ -298,7 +298,7 @@ export default function Home() {
                 <Users className="w-10 h-10 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Customer First</h3>
-              <p className="text-blue-100">Your satisfaction is our top priority in everything we do</p>
+              <p className="text-neutral-300">Your satisfaction is our top priority in everything we do</p>
             </div>
           </div>
         </div>
@@ -316,7 +316,7 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
+            <div className="w-24 h-1 bg-neutral-900 mx-auto mb-6"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               We offer a comprehensive range of printing services to meet all your needs
             </p>
@@ -337,9 +337,9 @@ export default function Home() {
               <motion.div 
                 whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                 transition={{ duration: 0.5 }}
-                className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+                className="w-14 h-14 bg-neutral-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-neutral-900 transition-colors"
               >
-                <Printer className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
+                <Printer className="w-7 h-7 text-neutral-800 group-hover:text-white transition-colors" />
               </motion.div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Offset & Digital Printing</h3>
               <p className="text-gray-600 text-sm">High-volume offset and quick-turnaround digital printing solutions for all your needs.</p>
@@ -353,9 +353,9 @@ export default function Home() {
               <motion.div 
                 whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                 transition={{ duration: 0.5 }}
-                className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+                className="w-14 h-14 bg-neutral-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-neutral-900 transition-colors"
               >
-                <svg className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-neutral-800 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <rect x="3" y="4" width="18" height="14" rx="2" strokeWidth="2"/>
                   <path d="M7 8h10M7 12h6" strokeWidth="2" strokeLinecap="round"/>
                 </svg>
@@ -372,9 +372,9 @@ export default function Home() {
               <motion.div 
                 whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                 transition={{ duration: 0.5 }}
-                className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+                className="w-14 h-14 bg-neutral-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-neutral-900 transition-colors"
               >
-                <svg className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-neutral-800 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <rect x="2" y="3" width="20" height="18" rx="2" strokeWidth="2"/>
                   <path d="M2 9h20M9 21V9" strokeWidth="2"/>
                 </svg>
@@ -391,9 +391,9 @@ export default function Home() {
               <motion.div 
                 whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                 transition={{ duration: 0.5 }}
-                className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+                className="w-14 h-14 bg-neutral-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-neutral-900 transition-colors"
               >
-                <Star className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
+                <Star className="w-7 h-7 text-neutral-800 group-hover:text-white transition-colors" />
               </motion.div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Custom Branding Materials</h3>
               <p className="text-gray-600 text-sm">Personalized branding solutions including letterheads, envelopes, and more.</p>
@@ -423,7 +423,7 @@ export default function Home() {
                 'Certificates'
               ].map((service, index) => (
                 <div key={index} className="flex items-center gap-2 text-gray-700">
-                  <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-neutral-800 flex-shrink-0" />
                   <span>{service}</span>
                 </div>
               ))}
@@ -436,12 +436,12 @@ export default function Home() {
       <section id="about" aria-label="About Chhaya Printing Solution" className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="bg-blue-600 rounded-2xl p-8 text-white">
+            <div className="bg-neutral-900 rounded-2xl p-8 text-white">
               <h3 className="text-2xl font-bold mb-6">About Our Company</h3>
-              <p className="text-blue-100 mb-6">
+              <p className="text-neutral-300 mb-6">
                 Chhaya Printing Solution has been serving the Patna region with excellence in printing services. Our journey began with a simple mission: to provide high-quality printing solutions that help businesses and individuals bring their ideas to life.
               </p>
-              <p className="text-blue-100 mb-6">
+              <p className="text-neutral-300 mb-6">
                 Today, we are proud to be one of the most trusted names in the printing industry, known for our commitment to quality, innovation, and customer satisfaction.
               </p>
               <div className="flex items-center gap-4">
@@ -450,36 +450,36 @@ export default function Home() {
                 </div>
                 <div>
                   <div className="font-semibold">Located in Patna</div>
-                  <div className="text-blue-200 text-sm">Bihar, India</div>
+                  <div className="text-neutral-400 text-sm">Bihar, India</div>
                 </div>
               </div>
             </div>
 
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Meet Our Founders</h2>
-              <div className="w-24 h-1 bg-blue-600 mb-6"></div>
+              <div className="w-24 h-1 bg-neutral-900 mb-6"></div>
               
               <div className="space-y-6">
                 <div className="bg-white rounded-xl p-6 shadow-md">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Users className="w-8 h-8 text-blue-600" />
+                    <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center">
+                      <Users className="w-8 h-8 text-neutral-800" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900">Shubham Kumar</h4>
-                      <p className="text-blue-600">Co-Founder</p>
+                      <p className="text-neutral-600">Co-Founder</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-white rounded-xl p-6 shadow-md">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Users className="w-8 h-8 text-blue-600" />
+                    <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center">
+                      <Users className="w-8 h-8 text-neutral-800" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900">Awdhesh Kumar</h4>
-                      <p className="text-blue-600">Co-Founder</p>
+                      <p className="text-neutral-600">Co-Founder</p>
                     </div>
                   </div>
                 </div>
@@ -495,15 +495,15 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get in Touch</h2>
-              <div className="w-24 h-1 bg-blue-600 mb-6"></div>
+              <div className="w-24 h-1 bg-neutral-900 mb-6"></div>
               <p className="text-lg text-gray-600 mb-8">
                 We would love to hear from you. Send us your feedback or inquiries and we will get back to you as soon as possible.
               </p>
 
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-neutral-100 rounded-lg flex items-center justify-center">
+                    <Phone className="w-6 h-6 text-neutral-800" />
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Phone</div>
@@ -512,8 +512,8 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-neutral-100 rounded-lg flex items-center justify-center">
+                    <Mail className="w-6 h-6 text-neutral-800" />
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Email</div>
@@ -522,8 +522,8 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-neutral-100 rounded-lg flex items-center justify-center">
+                    <MapPin className="w-6 h-6 text-neutral-800" />
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Address</div>
@@ -543,7 +543,7 @@ export default function Home() {
                     value={feedbackForm.name}
                     onChange={(e) => setFeedbackForm({ ...feedbackForm, name: e.target.value })}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-900"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -555,7 +555,7 @@ export default function Home() {
                     value={feedbackForm.email}
                     onChange={(e) => setFeedbackForm({ ...feedbackForm, email: e.target.value })}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-900"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -567,14 +567,14 @@ export default function Home() {
                     onChange={(e) => setFeedbackForm({ ...feedbackForm, message: e.target.value })}
                     required
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-900 resize-none"
                     placeholder="Write your message here..."
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-neutral-900 text-white py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
                 >
                   Send Message <Send size={20} />
                 </button>
@@ -604,16 +604,16 @@ export default function Home() {
                 Transforming ideas into high-quality prints with precision and creativity. Your trusted printing partner in Patna.
               </p>
               <div className="flex gap-4">
-                <a href="#" aria-label="Facebook" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a href="#" aria-label="Facebook" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-neutral-600 transition-colors">
                   <Facebook size={20} />
                 </a>
-                <a href="#" aria-label="Instagram" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a href="#" aria-label="Instagram" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-neutral-600 transition-colors">
                   <Instagram size={20} />
                 </a>
-                <a href="#" aria-label="Twitter" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a href="#" aria-label="Twitter" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-neutral-600 transition-colors">
                   <Twitter size={20} />
                 </a>
-                <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-neutral-600 transition-colors">
                   <Linkedin size={20} />
                 </a>
               </div>

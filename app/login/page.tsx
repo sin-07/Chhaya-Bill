@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, AlertCircle, Loader2 } from 'lucide-react';
+import { Shield, AlertCircle, Loader2, ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
   const [code, setCode] = useState(['', '', '', '', '', '']);
@@ -18,6 +17,8 @@ export default function LoginPage() {
   useEffect(() => {
     checkBlockStatus();
     checkAuthStatus();
+    // Auto-focus first input
+    document.getElementById('code-0')?.focus();
   }, []);
 
   const checkAuthStatus = async () => {
@@ -26,7 +27,6 @@ export default function LoginPage() {
         credentials: 'include'
       });
       if (response.ok) {
-        // User is already logged in, redirect to dashboard
         router.push('/dashboard');
       }
     } catch (error) {
@@ -52,15 +52,12 @@ export default function LoginPage() {
 
   const handleInputChange = (index: number, value: string) => {
     if (isBlocked) return;
-
-    // Only allow digits
     if (value && !/^\d$/.test(value)) return;
 
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
 
-    // Auto-focus next input
     if (value && index < 5) {
       const nextInput = document.getElementById(`code-${index + 1}`);
       nextInput?.focus();
@@ -85,7 +82,6 @@ export default function LoginPage() {
     
     setCode(newCode);
     
-    // Focus the next empty input or the last input
     const nextEmptyIndex = newCode.findIndex(c => !c);
     const focusIndex = nextEmptyIndex === -1 ? 5 : nextEmptyIndex;
     document.getElementById(`code-${focusIndex}`)?.focus();
@@ -94,9 +90,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (isBlocked) {
-      return;
-    }
+    if (isBlocked) return;
 
     const fullCode = code.join('');
     
@@ -111,9 +105,7 @@ export default function LoginPage() {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ code: fullCode }),
       });
@@ -121,7 +113,6 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Redirect to dashboard on successful login
         window.location.href = '/dashboard';
       } else {
         if (data.blocked) {
@@ -169,147 +160,144 @@ export default function LoginPage() {
 
   if (isBlocked) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-900 via-red-800 to-red-900 px-4">
-        <motion.div 
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", damping: 15 }}
-          className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 text-center"
-        >
-          <motion.div 
-            animate={{ 
-              scale: [1, 1.1, 1],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 cursor-pointer hover:bg-red-200 transition-colors"
-            onClick={handleUnlockClick}
-            title={unlockClicks > 0 ? `${5 - unlockClicks} more clicks to unlock` : 'Click 5 times to unlock'}
-          >
-            <AlertCircle className="w-10 h-10 text-red-600" />
-          </motion.div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Blocked</h1>
-          <p className="text-gray-600 mb-6">{blockMessage}</p>
-          <p className="text-sm text-gray-500">
-            If you believe this is an error, please contact the system administrator.
-          </p>
-        </motion.div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 to-neutral-100 px-4">
+        <div className="max-w-md w-full">
+          <div className="bg-white rounded-3xl shadow-xl shadow-neutral-200/30 border border-neutral-100 p-10 text-center">
+            <div
+              className="w-20 h-20 bg-gradient-to-br from-neutral-100 to-neutral-200 rounded-2xl flex items-center justify-center mx-auto mb-8 cursor-pointer hover:from-neutral-200 hover:to-neutral-300 transition-all duration-300"
+              onClick={handleUnlockClick}
+              title={unlockClicks > 0 ? `${5 - unlockClicks} more clicks to unlock` : ''}
+            >
+              <AlertCircle className="w-9 h-9 text-neutral-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-neutral-900 mb-3">Access Blocked</h1>
+            <p className="text-neutral-500 leading-relaxed mb-8">{blockMessage}</p>
+            <div className="bg-neutral-50 rounded-2xl p-5 border border-neutral-200">
+              <p className="text-sm text-neutral-600">
+                If you believe this is an error, please contact the system administrator.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 px-4">
-      <motion.div 
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", damping: 15, stiffness: 100 }}
-        className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8"
-      >
-        <motion.div 
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-          className="text-center mb-8"
-        >
-          <motion.div 
-            animate={{ 
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ 
-              duration: 2,
-              delay: 0.5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="relative w-20 h-20 mx-auto mb-4"
-          >
-            <Image
-              src="/logoC.jpeg"
-              alt="Chhaya Printing Solution Logo"
-              fill
-              className="object-contain rounded-lg"
-              priority
-            />
-          </motion.div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Login</h1>
-          <p className="text-gray-600">Enter your 6-digit access code</p>
-        </motion.div>
+  const filledCount = code.filter(d => d).length;
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <div className="flex gap-3 justify-center" onPaste={handlePaste}>
-              {code.map((digit, index) => (
-                <motion.input
-                  key={index}
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 + index * 0.05 }}
-                  whileFocus={{ scale: 1.1 }}
-                  id={`code-${index}`}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="w-12 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  disabled={loading}
-                  autoComplete="off"
-                />
-              ))}
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 via-white to-neutral-100/50 px-4 relative overflow-hidden">
+      {/* Subtle background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-neutral-100/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-neutral-100/40 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+
+      <div className="max-w-md w-full relative z-10">
+        {/* Back link */}
+        <a href="/" className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-neutral-700 transition-colors mb-10 group">
+          <ArrowLeft size={15} className="group-hover:-translate-x-0.5 transition-transform" />
+          Back to home
+        </a>
+
+        {/* Card */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl border border-neutral-200/60 shadow-xl shadow-neutral-200/40 p-10">
+          {/* Logo & Header */}
+          <div className="text-center mb-10">
+            <div className="relative w-20 h-20 mx-auto mb-5 rounded-2xl overflow-hidden shadow-lg shadow-neutral-200/50 ring-1 ring-neutral-100">
+              <Image
+                src="/logoC.jpeg"
+                alt="Chhaya Printing Solution Logo"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
+            <h1 className="text-2xl font-bold text-neutral-900 tracking-tight">Welcome Back</h1>
+            <p className="text-sm text-neutral-400 mt-2">Enter your 6-digit access code</p>
           </div>
 
-          <AnimatePresence>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Code Inputs */}
+            <div>
+              <div className="flex gap-3 justify-center" onPaste={handlePaste}>
+                {code.map((digit, index) => (
+                  <input
+                    key={index}
+                    id={`code-${index}`}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    className={`w-12 h-14 text-center text-xl font-bold rounded-2xl border-2 transition-all duration-200 outline-none
+                      ${digit 
+                        ? 'border-neutral-900 bg-neutral-50 text-neutral-900 shadow-sm shadow-neutral-200' 
+                        : 'border-neutral-200 bg-neutral-50/80 text-neutral-900 hover:border-neutral-300'}
+                      focus:border-neutral-900 focus:bg-white focus:ring-4 focus:ring-neutral-900/10 focus:shadow-sm`}
+                    disabled={loading}
+                    autoComplete="off"
+                  />
+                ))}
+              </div>
+              {/* Progress indicator */}
+              <div className="flex justify-center gap-1.5 mt-4">
+                {code.map((digit, index) => (
+                  <div
+                    key={index}
+                    className={`h-1 rounded-full transition-all duration-300 ${
+                      digit ? 'w-5 bg-neutral-900' : 'w-2 bg-neutral-200'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Error */}
             {error && (
-              <motion.div 
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden"
-              >
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-red-700">
-                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                  <span className="text-sm">{error}</span>
+              <div className="bg-neutral-50 border border-neutral-300 rounded-2xl px-5 py-4 flex items-start gap-3">
+                <div className="w-5 h-5 rounded-full bg-neutral-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <AlertCircle className="w-3.5 h-3.5 text-neutral-700" />
                 </div>
-              </motion.div>
+                <span className="text-sm text-neutral-700 leading-relaxed">{error}</span>
+              </div>
             )}
-          </AnimatePresence>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            type="submit"
-            disabled={loading || code.some(d => !d)}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Verifying...
-              </>
-            ) : (
-              'Login'
-            )}
-          </motion.button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <a href="/" className="text-sm text-blue-600 hover:text-blue-700">
-            Back to Home
-          </a>
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading || code.some(d => !d)}
+              className={`w-full py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2.5
+                ${loading || code.some(d => !d)
+                  ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
+                  : 'bg-neutral-900 text-white hover:bg-neutral-800 active:scale-[0.98] shadow-lg shadow-neutral-900/20 hover:shadow-xl hover:shadow-neutral-900/25'
+                }`}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4.5 h-4.5 animate-spin" />
+                  Verifying...
+                </>
+              ) : (
+                <>
+                  <Shield className="w-4.5 h-4.5" />
+                  Sign In
+                </>
+              )}
+            </button>
+          </form>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
-          <p>3 unsuccessful attempts will block access</p>
+        {/* Footer */}
+        <div className="mt-8 text-center space-y-2">
+          <p className="text-xs text-neutral-400">
+            Protected by secure authentication
+          </p>
+          <p className="text-xs text-neutral-300">
+            3 failed attempts will lock access
+          </p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

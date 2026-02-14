@@ -211,11 +211,11 @@ export function getPaymentStatus(dues: number, billTotal: number): PaymentStatus
 export function getPaymentStatusColor(status: PaymentStatus): string {
   switch (status) {
     case 'paid':
-      return 'text-green-600';
+      return 'text-neutral-700';
     case 'partial':
-      return 'text-yellow-600';
+      return 'text-neutral-500';
     case 'unpaid':
-      return 'text-red-600';
+      return 'text-neutral-900';
     default:
       return 'text-gray-600';
   }
@@ -230,11 +230,11 @@ export function getPaymentStatusColor(status: PaymentStatus): string {
 export function getPaymentStatusBadge(status: PaymentStatus): string {
   switch (status) {
     case 'paid':
-      return 'bg-green-100 text-green-800';
+      return 'bg-neutral-200 text-neutral-800';
     case 'partial':
-      return 'bg-yellow-100 text-yellow-800';
+      return 'bg-neutral-100 text-neutral-600';
     case 'unpaid':
-      return 'bg-red-100 text-red-800';
+      return 'bg-neutral-900 text-white';
     default:
       return 'bg-gray-100 text-gray-800';
   }

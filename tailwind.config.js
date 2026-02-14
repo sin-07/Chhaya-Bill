@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'print-blue': '#1e5a9e',
-        'print-green': '#2d8659',
+        'print-blue': '#1a1a1a',
+        'print-green': '#333333',
       },
       fontFamily: {
         'invoice': ['Open Sans', 'sans-serif'],

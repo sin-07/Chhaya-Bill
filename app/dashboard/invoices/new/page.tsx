@@ -257,7 +257,7 @@ export default function NewInvoicePage() {
                 type="text"
                 value={formData.invoiceNumber}
                 onChange={(e) => setFormData({ ...formData, invoiceNumber: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                 required
               />
             </div>
@@ -270,7 +270,7 @@ export default function NewInvoicePage() {
                 type="date"
                 value={formData.dateOfIssue}
                 onChange={(e) => setFormData({ ...formData, dateOfIssue: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                 required
               />
             </div>
@@ -288,7 +288,7 @@ export default function NewInvoicePage() {
                   type="text"
                   value={formData.clientName}
                   onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                   required
                 />
               </div>
@@ -301,7 +301,7 @@ export default function NewInvoicePage() {
                   type="text"
                   value={formData.clientAddress}
                   onChange={(e) => setFormData({ ...formData, clientAddress: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                   required
                 />
               </div>
@@ -315,7 +315,7 @@ export default function NewInvoicePage() {
                   step="0.01"
                   value={formData.previousDues || ''}
                   onChange={(e) => setFormData({ ...formData, previousDues: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                   placeholder="Enter previous dues if any"
                 />
               </div>
@@ -340,7 +340,7 @@ export default function NewInvoicePage() {
                         type="text"
                         value={product.name}
                         onChange={(e) => handleProductChange(index, 'name', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                         required
                       />
                     </div>
@@ -354,7 +354,7 @@ export default function NewInvoicePage() {
                         min="1"
                         value={product.quantity}
                         onChange={(e) => handleProductChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                         required
                       />
                     </div>
@@ -369,7 +369,7 @@ export default function NewInvoicePage() {
                         min="0"
                         value={product.unitCost}
                         onChange={(e) => handleProductChange(index, 'unitCost', parseFloat(e.target.value) || 0)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                         required
                       />
                     </div>
@@ -379,7 +379,7 @@ export default function NewInvoicePage() {
                         type="button"
                         onClick={() => removeProduct(index)}
                         disabled={formData.products.length === 1}
-                        className="w-full p-2 text-red-600 hover:bg-red-50 rounded disabled:opacity-30 disabled:cursor-not-allowed border border-gray-300"
+                        className="w-full p-2 text-neutral-800 hover:bg-neutral-50 rounded disabled:opacity-30 disabled:cursor-not-allowed border border-gray-300"
                         title="Remove Product"
                       >
                         <Trash2 size={20} className="mx-auto" />
@@ -400,7 +400,7 @@ export default function NewInvoicePage() {
                         value={product.width || ''}
                         onChange={(e) => handleProductChange(index, 'width', parseFloat(e.target.value) || 0)}
                         placeholder="Width"
-                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                       />
                     </div>
 
@@ -415,7 +415,7 @@ export default function NewInvoicePage() {
                         value={product.height || ''}
                         onChange={(e) => handleProductChange(index, 'height', parseFloat(e.target.value) || 0)}
                         placeholder="Height"
-                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-neutral-900"
                       />
                     </div>
 
@@ -446,7 +446,7 @@ export default function NewInvoicePage() {
                   </div>
 
                   {product.sqft && (
-                    <div className="mt-2 text-xs text-gray-600 bg-blue-50 p-2 rounded">
+                    <div className="mt-2 text-xs text-gray-600 bg-neutral-50 p-2 rounded">
                       <strong>Calculation:</strong> Qty ({product.quantity}) × Sq.Ft ({product.sqft.toFixed(2)}) × Unit Cost (₹{product.unitCost}) = ₹{product.total.toFixed(2)}
                     </div>
                   )}
@@ -457,7 +457,7 @@ export default function NewInvoicePage() {
             <button
               type="button"
               onClick={addProduct}
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mt-4"
+              className="flex items-center gap-2 px-4 py-2 bg-neutral-700 text-white rounded hover:bg-neutral-600 mt-4"
             >
               <Plus size={18} />
               Add Product
@@ -483,7 +483,7 @@ export default function NewInvoicePage() {
               {/* Bill Total (Grand Total) */}
               <div className="flex justify-between text-xl border-t-2 border-gray-300 pt-3">
                 <span className="font-bold">Grand Total:</span>
-                <span className="font-bold text-blue-600">{formatCurrency(billTotal)}</span>
+                <span className="font-bold text-neutral-900">{formatCurrency(billTotal)}</span>
               </div>
               
               {/* Advance Payment Input */}
@@ -498,14 +498,14 @@ export default function NewInvoicePage() {
                   max={billTotal}
                   value={formData.advancePaid || ''}
                   onChange={(e) => handleAdvancePaymentChange(e.target.value)}
-                  className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    paymentError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-neutral-900 ${
+                    paymentError ? 'border-neutral-800 bg-neutral-50' : 'border-gray-300'
                   }`}
                   placeholder="Enter advance payment amount"
                 />
                 {/* Payment Error Message */}
                 {paymentError && (
-                  <div className="mt-2 flex items-center gap-2 text-red-600 text-sm">
+                  <div className="mt-2 flex items-center gap-2 text-neutral-800 text-sm">
                     <AlertCircle size={16} />
                     <span>{paymentError}</span>
                   </div>
@@ -515,7 +515,7 @@ export default function NewInvoicePage() {
               {/* Advance Paid Display */}
               <div className="flex justify-between text-lg">
                 <span className="font-medium">Advance Paid:</span>
-                <span className="font-semibold text-green-600">- {formatCurrency(advancePaid)}</span>
+                <span className="font-semibold text-neutral-700">- {formatCurrency(advancePaid)}</span>
               </div>
               
               {/* Dues / Balance */}
@@ -526,19 +526,19 @@ export default function NewInvoicePage() {
                     {paymentStatus === 'paid' ? 'PAID' : paymentStatus === 'partial' ? 'PARTIAL' : 'UNPAID'}
                   </span>
                 </span>
-                <span className={`font-bold ${dues > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                <span className={`font-bold ${dues > 0 ? 'text-neutral-800' : 'text-neutral-700'}`}>
                   {formatCurrency(dues)}
                 </span>
               </div>
               
               {/* Payment Info Box */}
               {dues === 0 && advancePaid > 0 && (
-                <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded text-green-700 text-sm">
+                <div className="mt-3 p-3 bg-neutral-50 border border-neutral-300 rounded text-neutral-700 text-sm">
                   ✓ Invoice is fully paid. No remaining balance.
                 </div>
               )}
               {dues > 0 && (
-                <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-sm">
+                <div className="mt-3 p-3 bg-neutral-100 border border-neutral-300 rounded text-neutral-600 text-sm">
                   ⚠ Remaining balance of {formatCurrency(dues)} is due.
                 </div>
               )}
@@ -550,7 +550,7 @@ export default function NewInvoicePage() {
             <button
               type="submit"
               disabled={loading || !isValid}
-              className="flex-1 px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-3 bg-neutral-900 text-white rounded hover:bg-neutral-800 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Creating Invoice...' : 'Create Invoice'}
             </button>

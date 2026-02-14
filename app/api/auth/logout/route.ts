@@ -7,8 +7,15 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
     
-    // Clear the admin token cookie (note: cookie name is 'admin-token' not 'admin_token')
-    response.cookies.delete('admin-token');
+    // Clear the admin token cookie with explicit path to ensure it's removed
+    response.cookies.set('admin-token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 0,
+      expires: new Date(0),
+    });
     
     return response;
   } catch (error) {
